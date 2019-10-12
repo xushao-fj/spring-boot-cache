@@ -7,8 +7,8 @@ spring:
 
   cache:
     redis:
-      use-key-prefix: true
-      time-to-live: 1d
+      use-key-prefix: true # 是否配置前缀
+      time-to-live: 1d # 缓存时间
       port: 6379
       host: localhost
       database: 0
