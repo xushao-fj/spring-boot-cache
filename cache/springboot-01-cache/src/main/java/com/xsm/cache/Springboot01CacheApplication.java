@@ -19,6 +19,9 @@ import org.springframework.cache.annotation.EnableCaching;
  *    @Cacheable
  *    @CacheEvict
  *    @CachePut
+ * 开发中使用缓存中间件: redis, memcached, ehcache
+ *
+ * 三, 整合redis作为缓存
  */
 @EnableCaching
 @MapperScan("com.xsm.cache.mapper")

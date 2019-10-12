@@ -8,6 +8,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 /**
@@ -20,6 +21,10 @@ public class EmployeeService {
 
     @Autowired
     private EmployeeMapper employeeMapper;
+
+    /** 操作字符串*/
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
     /**
      * 将方法的运行结果进行缓存, 以后再要相同的数据, 直接从缓存中获取, 不用再调用方法
