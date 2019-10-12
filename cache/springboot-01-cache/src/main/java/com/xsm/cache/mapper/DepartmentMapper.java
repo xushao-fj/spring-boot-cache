@@ -1,6 +1,8 @@
 package com.xsm.cache.mapper;
 
+import com.xsm.cache.po.Department;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * @author xsm
@@ -8,4 +10,6 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface DepartmentMapper {
+    @Select("select * from department where id = #{id}")
+    Department getDeptById(Long id);
 }

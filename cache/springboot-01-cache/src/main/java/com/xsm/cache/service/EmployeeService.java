@@ -85,7 +85,7 @@ public class EmployeeService {
      * @param id
      * @return
      */
-    @Cacheable(cacheNames = {"emp"}, keyGenerator = "myKeyGenerator")
+    @Cacheable(cacheNames = {"emp"}, key = "#id" /*keyGenerator = "myKeyGenerator"*/)
     public Employee getEmp(Long id){
         System.out.println("查询" + id + "号员工");
         Employee emById = employeeMapper.getEmById(id);

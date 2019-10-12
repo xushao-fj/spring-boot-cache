@@ -1,10 +1,12 @@
 package com.xsm.cache.po;
 
+import java.io.Serializable;
+
 /**
  * @author xsm
  * @Date 2019/10/11 21:54
  */
-public class Employee {
+public class Employee implements Serializable {
     private Long id;
 
     private String lastName;
