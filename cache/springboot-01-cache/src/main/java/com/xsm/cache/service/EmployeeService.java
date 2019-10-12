@@ -3,13 +3,18 @@ package com.xsm.cache.service;
 import com.xsm.cache.mapper.EmployeeMapper;
 import com.xsm.cache.po.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 
 /**
  * @author xsm
  * @Date 2019/10/11 22:13
  */
+@CacheConfig(cacheNames = "emp") // 抽取缓存的公共配置
 @Service
 public class EmployeeService {
 
@@ -82,4 +87,64 @@ public class EmployeeService {
         return emById;
 
     }
+
+    /**
+     * @CachePut: 即调用方法, 同步更新缓存数据:
+     * 修改了数据库的某个数据, 同时更新缓存
+     * 运行时机:
+     *   1. 先调用目标方法
+     *   2. 将目标方法的结果缓存起来
+     * 测试步骤:
+     *   1. 查询1号员工, 查到的结果放到缓存中
+     *   2. 以后查询还是之前的结果
+     *   3. 更新1号员工: [lastName:zhangsan; gender: 0]
+     *         将方法的返回值也放进缓存了
+     *         key: 传入的employee对象  值: 返回的employee对象;
+     *   4. 查询1号员工?
+     *         应该是更新后的员工;
+     *           key = "@employee.id" : 使用传入的参数的员工id
+     *         @Cacheable 的key是不能用#result
+     *         为什么是没更新前的? [1号员工没有在缓存中更新]
+     * @param employee
+     * @return
+     */
+    @CachePut(value = "emp", key = "#result.id")
+    public Employee updateEmp(Employee employee){
+        employeeMapper.updateEm(employee);
+        System.out.println(employee);
+        return employee;
+
+    }
+
+    /**
+     * @CacheEvict: 缓存清除
+     *   key: 指定要删除的key
+     *   allEntries: 是否删除全部
+     *   beforeInvocation = false: 缓存的清除是否在方法执行之前清除
+     *                             默认代表是在方法执行之后执行 -> 如果出现异常缓存就不会清除
+     *   beforeInvocation = false: 默认代表是在方法执行之前执行 -> 无论方法执行结果如何, 都能够清除缓存
+     */
+    @CacheEvict(value = "emp", key = "#id", allEntries = true)
+    public void deleteEmp(Long id){
+        System.out.println("deleteEmp:" + id);
+        employeeMapper.deleteEmById(id);
+    }
+
+    /**
+     * @Caching: 定义复杂的缓存规则
+     */
+    @Caching(
+        cacheable = {
+            @Cacheable(value = "emp", key = "#lastName")
+        },
+        put = { // @CachePut 方法一定会执行
+            @CachePut(value = "emp", key = "#result.id"),
+            @CachePut(value = "emp", key = "#result.email")
+        }
+    )
+    public Employee getEmpByLastName(String lastName){
+        return employeeMapper.getEmpByLastName(lastName);
+
+    }
+
 }

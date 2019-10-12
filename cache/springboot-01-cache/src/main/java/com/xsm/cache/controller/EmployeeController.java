@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
  * @Date 2019/10/11 22:15
  */
 @RestController
-public class EmployeeContorller {
+public class EmployeeController {
+
     @Autowired
     private EmployeeService employeeService;
 
@@ -22,4 +23,24 @@ public class EmployeeContorller {
         return emp;
 
     }
+
+    @GetMapping("/emp")
+    public Employee update(Employee employee){
+        Employee updateEmp = employeeService.updateEmp(employee);
+        return updateEmp;
+
+    }
+
+    @GetMapping("/delEmp")
+    public String deleteEmp(Long id){
+        System.out.println("deleteEmp:" + id);
+        employeeService.deleteEmp(id);
+        return "success";
+    }
+
+    @GetMapping("/emp/lastName/{lastName}")
+    public Employee getEmpByLastName(@PathVariable("lastName")String lastName){
+        return employeeService.getEmpByLastName(lastName);
+    }
+
 }
