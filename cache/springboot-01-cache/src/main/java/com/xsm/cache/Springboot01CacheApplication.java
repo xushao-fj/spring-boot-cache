@@ -31,6 +31,7 @@ import org.springframework.cache.annotation.EnableCaching;
  *      2). RedisCacheManager 帮我们创建了RedisCache来作为缓存组件; RedisCache通过操作redis来缓存数据
  *      3). 默认保存数据 k->v, 都是Object; 利用序列化保存, 如何保存json?
  *          --> 1. 引入了redis的starter
+ *
  */
 @EnableCaching
 @MapperScan("com.xsm.cache.mapper")
