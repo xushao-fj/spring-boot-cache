@@ -31,7 +31,8 @@ public class DruidConfig {
     @Qualifier("primaryDataSource")
     @ConfigurationProperties(prefix="spring.datasource.druid.master")
     public DataSource druidPrimary(){
-        return new DruidDataSource();
+        DataSource druidDataSource = new DruidDataSource();
+        return druidDataSource;
     }
 
     // 从数据源
@@ -39,7 +40,9 @@ public class DruidConfig {
     @Qualifier("readonlyDataSource")
     @ConfigurationProperties(prefix="spring.datasource.druid.slave")
     public DataSource druidReadonly(){
-        return new DruidDataSource();
+
+        DataSource druidDataSource = new DruidDataSource();
+        return druidDataSource;
     }
 
     /**
