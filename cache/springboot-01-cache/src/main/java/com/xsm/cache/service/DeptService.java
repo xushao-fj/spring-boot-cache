@@ -23,7 +23,8 @@ public class DeptService {
     @Cacheable(cacheNames = "dept")
     public Department getDeptById(Long id){
         log.info("查询部门, id: {}", id);
-        return departmentMapper.getDeptById(id);
+        Department dept = departmentMapper.getDeptById(id);
+        return dept;
 
     }
 }
